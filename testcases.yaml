@@ -1,0 +1,152 @@
+---
+
+- description: End time is exclusive
+  minutes: 1
+  spans:
+    - start: 6:00:00
+      end:   6:01:00
+      type: sleep
+- description: Counts any minute containing sleep
+  minutes: 2
+  spans:
+    - start: 6:00:59
+      end:   6:01:01
+      type: sleep
+- description: Counts any minute containing sleep
+  minutes: 2
+  spans:
+    - start: 6:00:59
+      end:   6:02:00
+      type: sleep
+- description: Separate data points are added
+  minutes: 4
+  spans:
+    - start: 6:00:59
+      end:   6:01:01
+      type: sleep
+    - start: 7:00:59
+      end:   7:01:01
+      type: sleep
+- description: Adjacent data points are combined
+  minutes: 3
+  spans:
+    - start: 6:00:30
+      end:   6:01:30
+      type: sleep
+    - start: 6:01:30
+      end:   6:02:30
+      type: sleep
+- description: A minute is only counted once
+  minutes: 3
+  spans:
+    - start: 6:00:59
+      end:   6:01:01
+      type: sleep
+    - start: 6:01:59
+      end:   6:02:01
+      type: sleep
+- description: Minute not counted if more awake than asleep
+  minutes: 0
+  spans:
+    - start: 6:00:01
+      end:   6:00:02
+      type: sleep
+    - start: 6:00:01
+      end:   6:00:30
+      type: awake
+- description: Minute counted as awake if there is a tie
+  minutes: 1
+  spans:
+    - start: 6:00:01
+      end:   6:00:02
+      type: sleep
+    - start: 6:00:01
+      end:   6:00:02
+      type: awake
+- description: Long overlapping awake if more awake in first minute
+  minutes: 0
+  spans:
+    - start: 6:00:30
+      end:   6:05:59
+      type: sleep
+    - start: 6:00:01
+      end:   6:05:59
+      type: awake
+- description: Long overlapping alseep if more sleep in first minute
+  minutes: 6
+  spans:
+    - start: 6:00:01
+      end:   6:05:59
+      type: sleep
+    - start: 6:00:30
+      end:   6:05:30
+      type: awake
+- description: Preceeding minute doesn't affect tie break if spans don't overlap
+  minutes: 1
+  spans:
+    - start: 6:00:01
+      end:   6:00:02
+      type: sleep
+    - start: 6:00:01
+      end:   6:00:03
+      type: awake
+    - start: 6:01:01
+      end:   6:01:02
+      type: asleep
+    - start: 6:01:01
+      end:   6:01:02
+      type: awake
+- description: Tie break based on first overlapping minute
+  minutes: 3
+  spans:
+    - start: 6:00:01
+      end:   6:02:30
+      type: awake
+    - start: 6:00:02
+      end:   6:02:30
+      type: asleep
+    - start: 6:00:02
+      end:   6:02:30
+      type: asleep
+    - start: 6:00:59
+      end:   6:02:30
+      type: awake
+- description: Test case I had mis-documented
+  minutes: 0
+  spans:
+    - start: 6:00:01
+      end:   6:10:59
+      type: awake
+    - start: 6:00:59
+      end:   6:10:30
+      type: sleep
+    - start: 6:05:01
+      end:   6:10:30
+      type: awake
+    - start: 6:05:01
+      end:   6:10:30
+      type: awake
+    - start: 6:05:59
+      end:   6:10:30
+      type: sleep
+- description: Minute preceeding overlap treated as awake
+  minutes: 9
+  spans:
+    - start: 6:00:01
+      end:   6:10:30
+      type: sleep
+    - start: 6:04:01
+      end:   6:04:59
+      type: awake
+    - start: 6:04:01
+      end:   6:04:59
+      type: awake
+    - start: 6:05:01
+      end:   6:10:30
+      type: awake
+    - start: 6:05:01
+      end:   6:10:30
+      type: awake
+    - start: 6:05:59
+      end:   6:10:30
+      type: sleep
