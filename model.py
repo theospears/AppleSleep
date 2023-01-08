@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 import datetime
 from enum import Enum
+from typing import List
 
 
 class SleepAnalysis(str, Enum):
@@ -36,7 +37,7 @@ class Span:
 class TestCase:
     description: str
     minutes: int
-    spans: [Span]
+    spans: List[Span]
 
     @staticmethod
     def from_yaml(yaml_dict):
