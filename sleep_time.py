@@ -19,27 +19,27 @@ class SpanEnd:
     span: Span
 
 
-def is_asleep(span):
+def is_asleep(span: Span) -> bool:
     return span.type != SleepAnalysis.awake
 
 
-def noninclusive_minutes_between(start, end):
+def noninclusive_minutes_between(start: datetime.time, end: datetime.time) -> int:
     return end.hour * 60 + end.minute - (start.hour * 60 + start.minute) - 1
 
 
-def interval_in_seconds(start, end):
+def interval_in_seconds(start: datetime.time, end: datetime.time) -> int:
     def total_seconds(t):
         return t.hour * 60 * 60 + t.minute * 60 + t.second
 
     return total_seconds(end) - total_seconds(start)
 
 
-def minute(time):
+def minute(time: datetime.time) -> datetime.time:
     """Truncate a time to the minute it is part of"""
     return datetime.time(hour=time.hour, minute=time.minute)
 
 
-def add_minute(time):
+def add_minute(time: datetime.time) -> datetime.time:
     if time.minute == 59:
         return time.replace(hour=time.hour + 1, minute=0)
     else:
@@ -52,7 +52,7 @@ class SleepResolution(Enum):
     Ambiguous = 3
 
 
-def sleep_resolution_for_minute(spans, active_minute) -> SleepResolution:
+def sleep_resolution_for_minute(spans: List[Span], active_minute: datetime.time) -> SleepResolution:
     """
     Given a set of sleep analysis spans, and a particular minute, calculate whether that minute
     should be considered asleep. This assumes all supplied spans at least partially overlap with the
@@ -82,7 +82,7 @@ def sleep_resolution_for_minute(spans, active_minute) -> SleepResolution:
         return SleepResolution.Awake
 
 
-def would_first_minute_be_asleep(spans):
+def would_first_minute_be_asleep(spans: List[Span]) -> bool:
     """
     Given a set of spans, would we consider the first minute any of cover to be awake, only
     considering the spans supplied.
@@ -103,7 +103,7 @@ def would_first_minute_be_asleep(spans):
         return False
 
 
-def get_total_sleep_minutes(spans: List[Span]):
+def get_total_sleep_minutes(spans: List[Span]) -> int:
     """
     Given a set of sleep analysis spans, return the total number of minutes asleep in the same
     way the apple health app would do so.
